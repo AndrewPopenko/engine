@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { City } from '@entities/city/city.entity';
+import { Role } from '@entities/role/role.entity';
 
 @Entity('users')
 export class User {
@@ -13,9 +14,9 @@ export class User {
   @Column({ name: 'password', type: 'varchar' })
   password: string;
 
-  @OneToMany(() => City, (city) => city.id)
+  @ManyToOne(() => City, (city) => city.users)
   city: City;
 
-  //   @ManyToOne(() => Role, (role) => role.users)
-  //   role: Role;
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 }
