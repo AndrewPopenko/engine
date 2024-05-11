@@ -2,6 +2,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   Put,
@@ -20,7 +21,17 @@ export class UserController {
   async getAllUsers(@Req() req: Request, @Res() res: Response) {}
 
   @Get('/:id')
-  async getUser(@Req() req: Request, @Res() res: Response) {}
+  async getUser(
+    @Req() req: Request,
+    @Param('id') id: number,
+    @Res() res: Response,
+  ) {
+    const userData = await this.userService.getUserData(id);
+
+    delete userData.password;
+
+    return res.send({ status: 'ok', data: userData });
+  }
 
   @Post('/')
   async createUser(@Req() req: Request, @Res() res: Response) {
