@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
@@ -18,7 +19,20 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/')
-  async getAllUsers(@Req() req: Request, @Res() res: Response) {}
+  async getAllUsers(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    const users = await this.userService.getaAllUsers(page, limit);
+
+    if (users.length === 0) {
+      return res.send({ staus: 'ok', data: [] });
+    }
+
+    return res.send({ staus: 'ok', data: users });
+  }
 
   @Get('/:id')
   async getUser(

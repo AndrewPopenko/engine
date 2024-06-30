@@ -20,7 +20,13 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  public async getUserData(id: number) {
+  public async getUserData(id: number): Promise<User> {
     return await this.userRepository.findOne({ where: { id } });
+  }
+
+  public async getaAllUsers(page: number, limit: number): Promise<User[]> {
+    const skip = (page - 1) * limit;
+
+    return this.userRepository.find({ skip, take: limit });
   }
 }
